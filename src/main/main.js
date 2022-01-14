@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint global-require: off, no-console: off, promise/always-return: off */
 
 /**
@@ -40,6 +41,11 @@ ipcMain.on('ipc-example', async (event, arg) => {
   event.reply('ipc-example', msgTemplate('pong'));
 });
 
+ipcMain.on('app-close', async (_) => {
+  mainWindow = null;
+  app.quit();
+});
+
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
   sourceMapSupport.install();
@@ -78,7 +84,7 @@ const createWorkerWindow = async () => {
   });
 
   console.log('Loading worker from prebuilt file...');
-  await new Promise((r) => setTimeout(r, 1000));
+
   // worker.loadURL(resolveHtmlPath('worker.html'));
   worker.loadURL(`file://${path.resolve(__dirname, '../../', 'worker.html')}`);
 };
@@ -120,7 +126,6 @@ const createWindow = async () => {
   loadingWindow.on('ready-to-show', () => {
     loadingWindow.show();
   });
-  await new Promise((r) => setTimeout(r, 3000));
 
   // *****************************
   // ******** Main Window ********
@@ -145,7 +150,7 @@ const createWindow = async () => {
       throw new Error('"mainWindow" is not defined');
     }
     loadingWindow.hide();
-    loadingWindow.close();
+    // loadingWindow.close();
     if (process.env.START_MINIMIZED) {
       mainWindow.minimize();
     } else {
@@ -186,8 +191,8 @@ app.on('window-all-closed', () => {
 app
   .whenReady()
   .then(async () => {
-    await createWindow();
     await createWorkerWindow();
+    await createWindow();
     app.on('activate', () => {
       // On macOS it's common to re-create a window in the app when the
       // dock icon is clicked and there are no other windows open.

@@ -19,7 +19,7 @@ test.afterAll(async () => {
   await closeMainWindow(electronApp);
 });
 
-test('Verify worker window', async () => {
+test('Verify worker window Duplicate', async () => {
   const windowState = await loadWindow(pageTitles.worker, electronApp); // get worker window state
   console.log(windowState);
   expect(windowState.isVisible).toBeFalsy(); // worker window should not be visible
@@ -28,7 +28,7 @@ test('Verify worker window', async () => {
   expect(windowState.title).toBe('Worker...');
 });
 
-test('Verify loading window', async () => {
+test('Verify loading window Duplicate', async () => {
   const windowState = await loadWindow(pageTitles.loading, electronApp); // get loading window state
   console.log(windowState);
   // expect(windowState.isVisible).toBeTruthy();
@@ -37,7 +37,7 @@ test('Verify loading window', async () => {
   expect(windowState.title).toBe('Loading...');
 });
 
-test('Verify main window', async () => {
+test('Verify main window Duplicate', async () => {
   const windowState = await loadWindow(pageTitles.main, electronApp); // get main window state
   console.log(windowState);
   expect(windowState.isVisible).toBeTruthy();
